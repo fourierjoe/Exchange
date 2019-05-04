@@ -3,6 +3,8 @@ package com.qiao;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -16,6 +18,7 @@ public class Ipv6Util {
     public static void main(String[] args) {
         System.out.println(parseAbbreviationToFullIPv6("fe80::c0a8:34c9"));
         System.out.println(parseFullIPv6ToAbbreviation("fe80:0:0:0:0:0:c0a8:34c8"));
+        ipv4ToIpv6("192.168.52.1");
     }
     /**
      * 将 简写的IPv6 转换成 非简写的IPv6
@@ -145,19 +148,52 @@ public class Ipv6Util {
         return abbreviation;
     }
 
-    void function IPv4ToIPv6(IP){
+    private static String ipv4ToIpv6(String ipv4) {
+        // 192.168.52.200
+        ipv4 = "192.168.52.15";
+        String[] result = ipv4.split("\\.");
+        System.out.println(Arrays.toString(result));
+        StringBuffer sb = new StringBuffer(39);
+        sb.append("0000:0000:0000:0000:0000:0000");
+        for (int i = 0; i<result.length; i++) {
+            String hexString = Integer.toHexString(Integer.parseInt(result[i]));
+            if (hexString.length() < 2) {
+                hexString = "0" + hexString;
+            }
+            if (i % 2 == 0) {
+                sb.append(":");
+            }
+            sb.append(hexString);
+        }
+        System.out.println(sb);
+        System.out.println(sb.length());
+//        result[0] = Integer.toHexString(Integer.parseInt(result[0]));
+//        result[1] = Integer.toHexString(Integer.parseInt(result[1]));
+//        result[2] = Integer.toHexString(Integer.parseInt(result[2]));
+//        result[3] = Integer.toHexString(Integer.parseInt(result[3]));
+//        sb.append(result[0]).append(result[1]).append(result[2]).append(result[3]);
+//        String join = StringUtils.join(result[0],result[1],result[2],result[3], ":");
+//        System.out.println(join);
 
-
-    var result = IP.split('\.');    
-    result[0]= (Array(8).join(0) + parseInt(result[0]).toString(2)).slice(-8);
-    result[1]= (Array(8).join(0) + parseInt(result[1]).toString(2)).slice(-8);
-    result[2]= (Array(8).join(0) + parseInt(result[2]).toString(2)).slice(-8);
-    result[3]= (Array(8).join(0) + parseInt(result[3]).toString(2)).slice(-8);
-    
-    var result2=[];
-    result2[0]=(Array(4).join(0) + parseInt(''+result[0]+result[1],2).toString(16)).slice(-4);
-    result2[1]=(Array(4).join(0) + parseInt(''+result[2]+result[3],2).toString(16)).slice(-4);
-    
-    return '0000:0000:0000:0000:0000:0000:'+result2[0]+':'+result2[1];
+        return sb.toString();
     }
+
+    private void append(StringBuilder sb) {
+    }
+
+//    void function IPv4ToIPv6(IP){
+//
+//
+//    var result = IP.split('\.');
+//    result[0]= (Array(8).join(0) + parseInt(result[0]).toString(2)).slice(-8);
+//    result[1]= (Array(8).join(0) + parseInt(result[1]).toString(2)).slice(-8);
+//    result[2]= (Array(8).join(0) + parseInt(result[2]).toString(2)).slice(-8);
+//    result[3]= (Array(8).join(0) + parseInt(result[3]).toString(2)).slice(-8);
+//
+//    var result2=[];
+//    result2[0]=(Array(4).join(0) + parseInt(''+result[0]+result[1],2).toString(16)).slice(-4);
+//    result2[1]=(Array(4).join(0) + parseInt(''+result[2]+result[3],2).toString(16)).slice(-4);
+//
+//    return '0000:0000:0000:0000:0000:0000:'+result2[0]+':'+result2[1];
+//    }
 }
